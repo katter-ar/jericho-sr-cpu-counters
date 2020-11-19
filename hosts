@@ -13,9 +13,10 @@ ansible_python_interpreter=$(which python)
 localhost ansible_connection=local
 
 [arista]
-spine1 ansible_host=192.168.51.75
+#spine1 ansible_host=192.168.51.75
 #leaf1 ansible_host=192.168.51.71
 #poe-leaf1 ansible_host=192.168.51.86
+7280SR ansible_host=192.168.51.77
 
 [arista:vars]
 ansible_network_os=eos
