@@ -1,0 +1,21 @@
+[all:vars]
+ansible_connection=httpapi
+#ansible_connection=network_cli
+ansible_user=admin
+ansible_ssh_pass=N3tsupp0rt
+ansible_become=yes
+ansible_become_method=enable
+ansible_httpapi_use_ssl=true
+ansible_httpapi_validate_certs=false
+ansible_python_interpreter=$(which python)
+
+[local]
+localhost ansible_connection=local
+
+[arista]
+spine1 ansible_host=192.168.51.75
+#leaf1 ansible_host=192.168.51.71
+#poe-leaf1 ansible_host=192.168.51.86
+
+[arista:vars]
+ansible_network_os=eos
