@@ -1,0 +1,64 @@
+---
+- name: Get Show Counters for Jericho 7280CRA-30
+  hosts: arista
+  gather_facts: False
+
+  tasks:
+    - name: Check if file needs to be created
+      local_action: stat path=./{{ inventory_hostname }}cpucounters
+      register: doesfileexist
+    - name: Create file if needed
+      file:
+        path: "./{{ inventory_hostname }}cpucounters"
+        state: touch
+        mode: 0755
+      when: doesfileexist.stat.exists == false
+    - name: Gather Show CPU Counters
+      eos_command:
+        commands:
+        - command: show cpu counters queue
+          output: json
+      register: cpu_counters
+    - name: Populate Variables
+      set_fact:
+          bytesJericho00: "droppedBytes: {{ cpu_counters.stdout_lines[0]['ingressVoqs']['sources']['Jericho0.0']['cpuClasses']['CoppSystemVxlanEncap']['ports']['']['droppedBytes'] }}"
+          bytesJericho01: "droppedBytes: {{ cpu_counters.stdout_lines[0]['ingressVoqs']['sources']['Jericho0.1']['cpuClasses']['CoppSystemVxlanEncap']['ports']['']['droppedBytes'] }}"
+          bytesJericho10: "droppedBytes: {{ cpu_counters.stdout_lines[0]['ingressVoqs']['sources']['Jericho1.0']['cpuClasses']['CoppSystemVxlanEncap']['ports']['']['droppedBytes'] }}"
+          bytesJericho11: "droppedBytes: {{ cpu_counters.stdout_lines[0]['ingressVoqs']['sources']['Jericho1.1']['cpuClasses']['CoppSystemVxlanEncap']['ports']['']['droppedBytes'] }}"
+          bytesJericho20: "droppedBytes: {{ cpu_counters.stdout_lines[0]['ingressVoqs']['sources']['Jericho2.0']['cpuClasses']['CoppSystemVxlanEncap']['ports']['']['droppedBytes'] }}"
+          bytesJericho21: "droppedBytes: {{ cpu_counters.stdout_lines[0]['ingressVoqs']['sources']['Jericho2.1']['cpuClasses']['CoppSystemVxlanEncap']['ports']['']['droppedBytes'] }}"
+          packetsJericho00: "droppedPackets: {{ cpu_counters.stdout_lines[0]['ingressVoqs']['sources']['Jericho0.0']['cpuClasses']['CoppSystemVxlanEncap']['ports']['']['droppedPackets'] }}"
+          packetsJericho01: "droppedPackets: {{ cpu_counters.stdout_lines[0]['ingressVoqs']['sources']['Jericho0.1']['cpuClasses']['CoppSystemVxlanEncap']['ports']['']['droppedPackets'] }}"
+          packetsJericho10: "droppedPackets: {{ cpu_counters.stdout_lines[0]['ingressVoqs']['sources']['Jericho1.0']['cpuClasses']['CoppSystemVxlanEncap']['ports']['']['droppedPackets'] }}"
+          packetsJericho11: "droppedPackets: {{ cpu_counters.stdout_lines[0]['ingressVoqs']['sources']['Jericho1.1']['cpuClasses']['CoppSystemVxlanEncap']['ports']['']['droppedPackets'] }}"
+          packetsJericho20: "droppedPackets: {{ cpu_counters.stdout_lines[0]['ingressVoqs']['sources']['Jericho2.0']['cpuClasses']['CoppSystemVxlanEncap']['ports']['']['droppedPackets'] }}"
+          packetsJericho21: "droppedPackets: {{ cpu_counters.stdout_lines[0]['ingressVoqs']['sources']['Jericho2.1']['cpuClasses']['CoppSystemVxlanEncap']['ports']['']['droppedPackets'] }}"
+    - name: Display Current Show CPU Counters Dropped Bytes
+      debug:
+        msg: 
+          - "{{ bytesJericho00 }}"
+          - "{{ packetsJericho00 }}"
+          - "{{ bytesJericho01 }}"
+          - "{{ packetsJericho01 }}"
+          - "{{ bytesJericho10 }}"
+          - "{{ packetsJericho10 }}"
+          - "{{ bytesJericho11 }}"
+          - "{{ packetsJericho11 }}"
+          - "{{ bytesJericho20 }}"
+          - "{{ packetsJericho20 }}"
+          - "{{ bytesJericho21 }}"
+          - "{{ packetsJericho21 }}"
+          - "{{ lookup('pipe','date') }}"
+    - name: Send Jericho0.0 to files
+      local_action: lineinfile line="{{ lookup('pipe','date') }} 'Jericho00-CoppSystemVxlanEncap' {{ bytesJericho00 }} {{ packetsJericho00 }}" insertafter=EOF dest=./{{ inventory_hostname }}cpucounters
+    - name: Send Jericho0.1 to files
+      local_action: lineinfile line="{{ lookup('pipe','date') }} 'Jericho01-CoppSystemVxlanEncap' {{ bytesJericho01 }} {{ packetsJericho01 }}" insertafter=EOF dest=./{{ inventory_hostname }}cpucounters
+    - name: Send Jericho1.0 to files
+      local_action: lineinfile line="{{ lookup('pipe','date') }} 'Jericho10-CoppSystemVxlanEncap' {{ bytesJericho10 }} {{ packetsJericho10 }}" insertafter=EOF dest=./{{ inventory_hostname }}cpucounters
+    - name: Send Jericho1.1 to files
+      local_action: lineinfile line="{{ lookup('pipe','date') }} 'Jericho11-CoppSystemVxlanEncap' {{ bytesJericho11 }} {{ packetsJericho11 }}" insertafter=EOF dest=./{{ inventory_hostname }}cpucounters
+    - name: Send Jericho2.0 to files
+      local_action: lineinfile line="{{ lookup('pipe','date') }} 'Jericho20-CoppSystemVxlanEncap' {{ bytesJericho20 }} {{ packetsJericho20 }}" insertafter=EOF dest=./{{ inventory_hostname }}cpucounters
+    - name: Send Jericho2.1 to files
+      local_action: lineinfile line="{{ lookup('pipe','date') }} 'Jericho21-CoppSystemVxlanEncap' {{ bytesJericho21 }} {{ packetsJericho21 }}" insertafter=EOF dest=./{{ inventory_hostname }}cpucounters
+
