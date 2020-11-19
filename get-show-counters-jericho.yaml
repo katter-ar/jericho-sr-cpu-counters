@@ -1,5 +1,5 @@
 ---
-- name: Get Show Counters for Jericho 7280SR-48Y6
+- name: Get Show Counters for Jericho 7280SR-48C6
   hosts: arista
   gather_facts: False
 
