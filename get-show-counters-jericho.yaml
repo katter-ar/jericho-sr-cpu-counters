@@ -24,7 +24,7 @@
           bytesJericho00: "droppedBytes: {{ cpu_counters.stdout_lines[0]['ingressVoqs']['sources']['Jericho0.0']['cpuClasses']['CoppSystemVxlanEncap']['ports']['']['droppedBytes'] }}"
           bytesJericho01: "droppedBytes: {{ cpu_counters.stdout_lines[0]['ingressVoqs']['sources']['Jericho0.1']['cpuClasses']['CoppSystemVxlanEncap']['ports']['']['droppedBytes'] }}"
           packetsJericho00: "droppedPackets: {{ cpu_counters.stdout_lines[0]['ingressVoqs']['sources']['Jericho0.0']['cpuClasses']['CoppSystemVxlanEncap']['ports']['']['droppedPackets'] }}"
-          packetsJericho01: "droppedPackets: {{ cpu_counters.stdout_lines[0]['ingressVoqs']['sources']['Jericho0.1']['cpuClasses']['CoppSystemVxlanEncap']['ports']['']['droppedPackets'] }}"
+#          packetsJericho01: "droppedPackets: {{ cpu_counters.stdout_lines[0]['ingressVoqs']['sources']['Jericho0.1']['cpuClasses']['CoppSystemVxlanEncap']['ports']['']['droppedPackets'] }}"
     - name: Display Current Show CPU Counters Dropped Bytes
       debug:
         msg: 
@@ -32,7 +32,7 @@
           - "{{ packetsJericho00 }}"
           - "{{ bytesJericho01 }}"
           - "{{ packetsJericho01 }}"
-          - "{{ lookup('pipe','date') }}"
+#          - "{{ lookup('pipe','date') }}"
     - name: Send Jericho0.0 to files
       local_action: lineinfile line="{{ lookup('pipe','date') }} 'Jericho00-CoppSystemVxlanEncap' {{ bytesJericho00 }} {{ packetsJericho00 }}" insertafter=EOF dest=./{{ inventory_hostname }}cpucounters
     - name: Send Jericho0.1 to files
