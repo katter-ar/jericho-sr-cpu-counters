@@ -1,10 +1,12 @@
-# About
+# Capture Drops from CPU Counters on a 7280SR-48C6 - WORK IN PROGRESS
 
-This repository automates the process of collecting drop counters on a 7280SR-48Y6 switch platform.
+## About
 
-# Assumptions
+This repository automates the process of collecting drop counters on a 7280SR-48C6 switch platform.
 
-The inventory will be pulled from 'hosts' file which contains only 7280SR-48Y6 switch hosts.
+## Assumptions
 
-# jericho-sr-cpu-counters
+The inventory will be pulled from 'hosts' file which contains only 7280SR-48C6 switch hosts.
+
+## jericho-sr-cpu-counters
 Capture 'show cpu counters queue' for CoppSystemVxlanEncap drops
