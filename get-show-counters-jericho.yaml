@@ -23,6 +23,8 @@
       set_fact:
           bytesJericho00: "droppedBytes: {{ cpu_counters.stdout_lines[0]['ingressVoqs']['sources']['Jericho0.0']['cpuClasses']['CoppSystemVxlanEncap']['ports']['']['droppedBytes'] }}"
           bytesJericho01: "droppedBytes: {{ cpu_counters.stdout_lines[0]['ingressVoqs']['sources']['Jericho0.1']['cpuClasses']['CoppSystemVxlanEncap']['ports']['']['droppedBytes'] }}"
+          packetsJericho00: "droppedPackets: {{ cpu_counters.stdout_lines[0]['ingressVoqs']['sources']['Jericho0.0']['cpuClasses']['CoppSystemVxlanEncap']['ports']['']['droppedPackets'] }}"
+          packetsJericho01: "droppedPackets: {{ cpu_counters.stdout_lines[0]['ingressVoqs']['sources']['Jericho0.1']['cpuClasses']['CoppSystemVxlanEncap']['ports']['']['droppedPackets'] }}"
     - name: Display Current Show CPU Counters Dropped Bytes
       debug:
         msg: 
